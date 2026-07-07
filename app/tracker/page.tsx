@@ -12,8 +12,8 @@ interface Expense {
 
 export default function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([
-    { id: '1', category: 'Food', amount: 15.50, description: 'Lunch at cafe', date: 'Today' },
-    { id: '2', category: 'Software', amount: 49.00, description: 'Cloud server hosting subscription', date: 'Yesterday' }
+    { id: '1', category: 'Food', amount: 240.00, description: 'Dinner via Swiggy', date: 'Today' },
+    { id: '2', category: 'Transport', amount: 80.00, description: 'Auto ride via Namma Yatri', date: 'Yesterday' }
   ]);
   
   const [aiInput, setAiInput] = useState('');
@@ -25,24 +25,23 @@ export default function ExpenseTracker() {
 
     setIsProcessing(true);
 
-    // Simulate an AI LLM parsing text
+    // Simulate an AI LLM parsing Indian consumer text streams
     setTimeout(() => {
-      let amount = 10.00;
+      let amount = 100.00; 
       let category = 'General';
       
-      // Basic regex parsing to extract numbers/prices
-      const moneyMatch = aiInput.match(/\$?(\d+(\.\d{2})?)/);
+      const moneyMatch = aiInput.match(/(?:₹|Rs\.?\s?)(\d+(\.\d{2})?)/i) || aiInput.match(/(\d+)\s?(?:rs|rupees)/i);
       if (moneyMatch) {
         amount = parseFloat(moneyMatch[1]);
       }
 
       const lowerInput = aiInput.toLowerCase();
-      if (lowerInput.includes('food') || lowerInput.includes('lunch') || lowerInput.includes('dinner') || lowerInput.includes('cafe')) {
+      if (lowerInput.includes('swiggy') || lowerInput.includes('zomato') || lowerInput.includes('chai') || lowerInput.includes('food')) {
         category = 'Food';
-      } else if (lowerInput.includes('uber') || lowerInput.includes('travel') || lowerInput.includes('cab') || lowerInput.includes('ride')) {
+      } else if (lowerInput.includes('auto') || lowerInput.includes('ola') || lowerInput.includes('uber') || lowerInput.includes('metro')) {
         category = 'Transport';
-      } else if (lowerInput.includes('software') || lowerInput.includes('aws') || lowerInput.includes('domain') || lowerInput.includes('hosting')) {
-        category = 'Software';
+      } else if (lowerInput.includes('zepto') || lowerInput.includes('blinkit') || lowerInput.includes('instamart')) {
+        category = 'Groceries';
       }
 
       const newExpense: Expense = {
@@ -50,16 +49,16 @@ export default function ExpenseTracker() {
         category,
         amount,
         description: aiInput,
-        date: 'Just now via AI'
+        date: 'Just now via UPI Stream'
       };
 
       setExpenses([newExpense, ...expenses]);
       setAiInput('');
       setIsProcessing(false);
-    }, 800); // 800ms natural engine delay
+    }, 800);
   };
 
-  const totalSpent = expenses.reduce((sum, item) => sum + item.amount, 0);
+  const totalSpent = expenses.reduce((sum, expenseItem) => sum + expenseItem.amount, 0);
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 pl-72 pr-8 pt-8 pb-12">
@@ -68,37 +67,37 @@ export default function ExpenseTracker() {
           <span>AI Expense Copilot</span> 
           <Sparkles className="text-yellow-500 h-7 w-7" />
         </h1>
-        <p className="text-slate-500">Natural language processing ledger for instant financial tracking.</p>
+        <p className="text-slate-500">Natural language processing ledger optimized for Indian consumer ecosystems.</p>
       </header>
 
-      {/* Overview Metrics cards */}
+      {/* Overview Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-linear-to-br from-indigo-600 to-purple-600 p-6 rounded-xl text-white shadow-md">
-          <p className="text-xs font-semibold uppercase tracking-wider opacity-80">Total Tracked Outflow</p>
-          <p className="text-3xl font-bold mt-2">${totalSpent.toFixed(2)}</p>
+          <p className="text-xs font-semibold uppercase tracking-wider opacity-80">Total Outflow</p>
+          <p className="text-3xl font-bold mt-2">₹{totalSpent.toFixed(2)}</p>
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">AI Parsing Status</p>
-            <p className="text-lg font-bold text-slate-800 mt-1">LLM Model Listening</p>
+            <p className="text-lg font-bold text-slate-800 mt-1">UPI SMS Engine Active</p>
           </div>
           <Sparkles className="text-indigo-500 animate-pulse" size={28} />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Input Field */}
+        {/* Left Input Box */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 h-fit">
           <h2 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
             <Wallet size={18} className="text-indigo-500" />
-            <span>Type Express Transaction</span>
+            <span>Type UPI Transaction</span>
           </h2>
           <form onSubmit={handleAiSubmit} className="space-y-3">
             <input 
               type="text"
               value={aiInput}
               onChange={(e) => setAiInput(e.target.value)}
-              placeholder="e.g., Spent $24 on Uber travel today"
+              placeholder="e.g., Paid ₹120 for Swiggy food delivery"
               className="w-full p-3 rounded-lg border border-slate-200 outline-none focus:border-indigo-500 text-sm text-slate-800"
               disabled={isProcessing}
               aria-label="Natural Language Expense Input"
@@ -109,11 +108,11 @@ export default function ExpenseTracker() {
               className="w-full bg-slate-900 hover:bg-slate-800 text-white p-3 rounded-lg text-xs font-medium tracking-wide transition flex items-center justify-center gap-2"
             >
               <Sparkles size={14} className="text-yellow-400" />
-              <span>{isProcessing ? 'Analyzing Stream...' : 'Analyze with AI'}</span>
+              <span>{isProcessing ? 'Parsing UPI Log...' : 'Process Transaction'}</span>
             </button>
           </form>
           <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
-            *Try entering phrases specifying amounts like &quot;$12&quot; or categories like &quot;lunch&quot; to see structural data extraction.
+            *Try entering phrases specifying tokens like &quot;Rs 500&quot; or native utilities like &quot;Zomato&quot; to see real-time stack separation.
           </p>
         </div>
 
@@ -145,7 +144,7 @@ export default function ExpenseTracker() {
                 </div>
                 <span className="font-bold text-sm text-rose-600 flex items-center">
                   <TrendingUp size={14} className="inline mr-1" />
-                  -${item.amount.toFixed(2)}
+                  -₹{item.amount.toFixed(2)}
                 </span>
               </div>
             ))}

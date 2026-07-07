@@ -10,10 +10,9 @@ interface Task {
 
 export default function KanbanBoard() {
   const [tasks, setTasks] = useState<Task[]>([
-    { id: '1', title: 'Setup Next.js boilerplate', status: 'done' },
-    { id: '2', title: 'Integrate dynamic dashboard stats', status: 'progress' },
-    { id: '3', title: 'Connect cloud database layer', status: 'todo' },
-  ]);
+   { id: '1', title: 'Fix razorpay payment gateway integration webhook', status: 'done' },
+   { id: '2', title: 'Optimize loading speeds for tier-2/tier-3 city networks', status: 'progress' },
+   { id: '3', title: 'Design localization high-fidelity wireframes', status: 'todo' },]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const addTask = (e: React.FormEvent) => {

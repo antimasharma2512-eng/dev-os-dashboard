@@ -28,7 +28,7 @@ export default function TerminalConsole() {
       } else if (cmd === 'skills') {
         reply = 'Next.js 14, React, TypeScript, Tailwind CSS, Node.js, Git';
       } else if (cmd === 'contact') {
-        reply = 'Let\'s connect! Email: support@infotact.in | Web: localhost:3000';
+        reply = 'Let\'s connect! Email: antima.sharma@domain.in | Location: New Delhi, India';
       }
 
       if (cmd === 'clear') {
