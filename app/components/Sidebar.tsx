@@ -26,15 +26,19 @@ export default function Sidebar() {
         </nav>
       </div>
       <div className="border-t border-slate-800 pt-4">
-        <a 
-          href="https://github.com" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="flex items-center gap-3 p-2 text-slate-400 hover:text-white transition"
-        >
-          <Code size={20} />
-          <span>GitHub Profile</span>
-        </a>
+       <a 
+         href="https://github.com/antimasharma2512-eng" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition text-slate-300 mt-auto border-t border-slate-800">
+       <div className="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+         A
+       </div>
+       <div className="flex flex-col text-left">
+         <span className="text-xs font-semibold text-white">Antima Sharma</span>
+         <span className="text-[10px] text-slate-400">@antimasharma2512-eng</span>
+       </div>
+       </a>
       </div>
     </aside>
   );
