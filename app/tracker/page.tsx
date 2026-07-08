@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wallet, Sparkles, TrendingUp, ListFilter } from 'lucide-react';
 
 interface Expense {
@@ -11,13 +11,33 @@ interface Expense {
 }
 
 export default function ExpenseTracker() {
-  const [expenses, setExpenses] = useState<Expense[]>([
-    { id: '1', category: 'Food', amount: 240.00, description: 'Dinner via Swiggy', date: 'Today' },
-    { id: '2', category: 'Transport', amount: 80.00, description: 'Auto ride via Namma Yatri', date: 'Yesterday' }
-  ]);
-  
+  // Safe LocalStorage Initializer Pattern (Bypasses ESLint rule perfectly)
+  const [expenses, setExpenses] = useState<Expense[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('infotact_expenses');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error("Error parsing localStorage expenses", e);
+        }
+      }
+    }
+    return [
+      { id: '1', category: 'Food', amount: 240.00, description: 'Dinner via Swiggy', date: 'Today' },
+      { id: '2', category: 'Transport', amount: 80.00, description: 'Auto ride via Namma Yatri', date: 'Yesterday' }
+    ];
+  });
+
   const [aiInput, setAiInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Synchronization effect to save updates
+  useEffect(() => {
+    if (expenses.length > 0) {
+      localStorage.setItem('infotact_expenses', JSON.stringify(expenses));
+    }
+  }, [expenses]);
 
   const handleAiSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +45,6 @@ export default function ExpenseTracker() {
 
     setIsProcessing(true);
 
-    // Simulate an AI LLM parsing Indian consumer text streams
     setTimeout(() => {
       let amount = 100.00; 
       let category = 'General';
@@ -70,7 +89,6 @@ export default function ExpenseTracker() {
         <p className="text-slate-500">Natural language processing ledger optimized for Indian consumer ecosystems.</p>
       </header>
 
-      {/* Overview Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-linear-to-br from-indigo-600 to-purple-600 p-6 rounded-xl text-white shadow-md">
           <p className="text-xs font-semibold uppercase tracking-wider opacity-80">Total Outflow</p>
@@ -79,14 +97,13 @@ export default function ExpenseTracker() {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">AI Parsing Status</p>
-            <p className="text-lg font-bold text-slate-800 mt-1">UPI SMS Engine Active</p>
+            <p className="text-lg font-bold text-slate-800 mt-1">UPI SMS Engine Persistent</p>
           </div>
           <Sparkles className="text-indigo-500 animate-pulse" size={28} />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Input Box */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 h-fit">
           <h2 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
             <Wallet size={18} className="text-indigo-500" />
@@ -116,7 +133,6 @@ export default function ExpenseTracker() {
           </p>
         </div>
 
-        {/* Ledger Stream */}
         <div className="lg:col-span-2 space-y-4">
           <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
             <h2 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
